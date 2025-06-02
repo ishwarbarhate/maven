@@ -1,45 +1,20 @@
-pipeline {
-  agent any
-  stages {
-    stage('scm checkout') {
-      steps {
-        git branch: 'master', url: 'https://github.com/kumargaurav039/maven-project.git'
-      }
-    }
-
-    stage('compile the job') //validate then compile
+pipeline
+{
+    agent any
+    stages
     {
-      steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
-          sh 'mvn compile'
+        stage('scm checkout') {
+            steps {
+                git branch:'master',url: 'https://github.com/kumargaurav039/maven-project.git'
+            }
         }
-      }
-    }
-    stage('build the code') {
-      steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
-          sh 'mvn clean package'
+        stage('code validate')
+        {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn validate'
+                }
+            }
         }
-      }
     }
-
-    stage('create docker image') {
-      steps {
-        sh 'docker build -t e31531469/devops947:latest .'
-      }
-    }
-
-
-
-    stage('push docker image to dockerhub') {
-      steps {
-        
-        withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
-            
-                sh 'docker push e31531469/devops947:latest'
-            
-        }
-      }
-    }
-  }
 }
