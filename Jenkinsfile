@@ -7,7 +7,7 @@ pipeline
             steps {
                 git branch:'master',url: 'https://github.com/ishwarbarhate/maven.git'
             }
-        }
+        } 
         stage('code validate')
         {
             steps {
