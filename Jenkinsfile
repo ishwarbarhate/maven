@@ -51,7 +51,7 @@ pipeline {
           stage('Code deploy ') {
             steps {
                 sshagent(['ISHWAR']) {
-                sh'scp -o StrictHostKeyChecking=no webapp.war ec2-user@172.31.8.125:/user/share/tomcat/webapp'
+                sh'scp -o StrictHostKeyChecking=no webapp.war ec2-user@172.31.14.236:/user/share/tomcat/webapp'
                 }
             }
         }
