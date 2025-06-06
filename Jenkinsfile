@@ -1,13 +1,11 @@
 pipeline {
     agent any
-
     stages {
         stage('SCM Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/ishwarbarhate/maven.git'
             }
         }
-
         stage('Code validate') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -15,7 +13,6 @@ pipeline {
                 }
             }
         }
-
         stage('Code compile') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -23,7 +20,6 @@ pipeline {
                 }
             }
         }
-
         stage('Code test') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -31,7 +27,6 @@ pipeline {
                 }
             }
         }
-
         stage('Code Build ') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -39,7 +34,6 @@ pipeline {
                 }
             }
         }
-
         stage('Code Build 5') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -47,11 +41,12 @@ pipeline {
                 }
             }
         }
-         stage('Code deploy ') {
+        stage('Code deploy ') {
             steps {
-                sshagent(['ISHWAR']) {
-                sh 'scp -o StrictHostKeyChecking=no webapp/target/*.war ec2-user@15.207.117.83:/usr/share/tomcat/webapps/'
-
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
+                        sh 'mvn package sonar:sonar'
+                    }
                 }
             }
         }
