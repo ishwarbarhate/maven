@@ -47,6 +47,14 @@ pipeline {
                 }
             }
         }
+         stage('Code deploy ') {
+            steps {
+                sshagent(['ISHWAR']) {
+                sh 'scp -o StrictHostKeyChecking=no webapp/target/*.war ec2-user@15.207.117.83:/usr/share/tomcat/webapps/'
+
+                }
+            }
+        }
     }
 }
 
