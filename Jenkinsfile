@@ -53,7 +53,7 @@ pipeline {
     stage('push docker image to dockerhub') {
       steps {
         
-        withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
+        withDockerRegistry(credentialsId: 'kl', url: 'https://index.docker.io/v1/') {
             
                 sh 'docker push michaeljackson131469/ishwar:latest'
     }
