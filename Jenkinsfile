@@ -50,9 +50,17 @@ pipeline {
                 }
             }
         }
+        stage('create docker image') {
+            steps {
+                sh 'docker build -t e31531469/ishwar:latest .'
+            }
+        }
+        stage('push docker image to dockerhub') {
+            steps {
+                withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
+                    sh 'docker push e31531469/ishwar:latest'
+                }
+            }
+        }
     }
 }
-
-
-
-
