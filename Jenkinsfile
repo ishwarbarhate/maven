@@ -1,31 +1,49 @@
 pipeline {
-  agent any
-  stages {
-    stage('scm checkout') {
-      steps {
-        git branch: 'master', url: 'https://github.com/ishwarbarhate/maven.git'
-      }
-    }
-
-    stage('compile the job') //validate then compile
-    {
-      steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-          sh 'mvn compile'
+    agent any
+    stages {
+        stage('SCM Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/ishwarbarhate/maven.git'
+            }
         }
-      }
-    }
-    stage('build the code') {
-      steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-          sh 'mvn clean package'
+        stage('Code validate') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn validate'
+                }
+            }
         }
-      }
-    }
-
-    stage('create docker image') {
+        stage('Code compile') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn compile'
+                }
+            }
+        }
+        stage('Code test') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('Code Build ') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn package'
+                }
+            }
+        }
+        stage('Code Build 5') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn package'
+                }
+            }
+        }
+       stage('create docker image') {
       steps {
-        sh 'docker build -t e31531469/ishwar:latest .'
+        sh 'docker build -t e31531469/ethans954:latest .'
       }
     }
 
@@ -36,10 +54,10 @@ pipeline {
         
         withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
             
-                sh 'docker push e31531469/ishwar:latest'
-            
-        }
-      }
+                sh 'docker push e31531469/ethans954:latest'
     }
-  }
+}
+
+    }
+    }
 }
