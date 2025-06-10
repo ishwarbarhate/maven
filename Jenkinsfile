@@ -55,7 +55,7 @@ pipeline {
         
         withDockerRegistry(credentialsId: 'kl', url: 'https://index.docker.io/v1/') {
             
-                sh 'docker push michaeljackson131469/ishwar:latest'
+                sh 'docker push michaeljackson1/ishwar:latest'
     }
 }
 
