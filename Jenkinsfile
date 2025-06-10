@@ -44,7 +44,7 @@ pipeline {
         }
        stage('create docker image') {
       steps {
-        sh 'docker build -t michaeljackson1/ishwar:latest .'
+        sh 'docker build -t michaeljackson1/kk:latest .'
       }
     }
 
@@ -55,7 +55,7 @@ pipeline {
         
         withDockerRegistry(credentialsId: 'kl', url: 'https://index.docker.io/v1/') {
             
-                sh 'docker push michaeljackson1/ishwar:latest'
+                sh 'docker push michaeljackson1/kk:latest'
     }
 }
 
